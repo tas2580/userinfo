@@ -1,0 +1,16 @@
+/* Style Sheet for AJAX Userinfo
+---------------------------------------- */
+#popup {
+	z-index: 60;
+	position: absolute;
+	display: none;
+	font-size: 10px;
+	width: 350px;
+}
+#ajax_avatar {
+	width:100px;
+	float: left;
+	overflow: hidden;
+	height: 100px;
+	text-align: center;
+}

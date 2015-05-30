@@ -1,0 +1,36 @@
+{
+	"name": "tas2580/userinfo",
+	"type": "phpbb-extension",
+	"description": "Displays a popup with information about users.",
+	"homepage": "https://tas2580.net/downloads/download-13.html",
+	"version": "0.1.0",
+	"keywords": ["phpbb", "extension", "user"],
+	"license": "GPL-2.0",
+	"authors": [
+		{
+			"name": "Tobi Schäfer",
+			"homepage": "https://tas2580.net",
+			"email": "mail@tas2580.net",
+			"role": "Developer"
+		}
+	],
+	"require": {
+		"php": ">=5.3.3",
+		"composer/installers": "~1.0"
+	},
+	"require-dev": {
+		"phpbb/epv": "dev-master"
+	},
+	"extra": {
+		"display-name": "tas2580 AJAX Userinfo",
+		"soft-require": {
+			"phpbb/phpbb": ">=3.1.4-RC1,<3.2.*@dev"
+		},
+		"version-check": {
+			"host": "tas2580.net",
+			"directory": "/modules/downloads/version",
+			"filename": "download13.json"
+		}
+	}
+}
+

@@ -1,0 +1,18 @@
+services:
+    tas2580.userinfo.listener:
+        class: tas2580\userinfo\event\listener
+        arguments:
+            - @user
+            - @template
+            - @auth
+            - @controller.helper
+        tags:
+            - { name: event.listener }
+    tas2580.userinfo.user:
+        class: tas2580\userinfo\controller\user
+        arguments:
+            - @dbal.conn
+            - @user
+            - %tables.users%
+            - %core.root_path%
+            - %core.php_ext%
