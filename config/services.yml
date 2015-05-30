@@ -11,6 +11,7 @@ services:
     tas2580.userinfo.user:
         class: tas2580\userinfo\controller\user
         arguments:
+            - @auth
             - @dbal.conn
             - @user
             - %tables.users%
