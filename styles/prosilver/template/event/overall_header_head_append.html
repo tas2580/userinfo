@@ -1,14 +1,20 @@
 <!-- INCLUDECSS @tas2580_userinfo/style.css -->
 <script type="text/javascript">
+var timer;
+// set delay to 1 second
+var delay = 1000;
 // <![CDATA[
     // show the popup
     function show_popup(UserID) {
-            if(http_getuser) {
+    timer = setTimeout(function() {
+             if(http_getuser) {
                     close_popup(); sendRequest(UserID);
             }
+    }, delay);
     }
     // hide the popup
     function close_popup() {
+	clearTimeout(timer);
             document.getElementById('popup').style.display='none';
     }
     // Make the request
