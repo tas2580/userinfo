@@ -1,45 +1,48 @@
 <?php
+
 /**
-*
-* @package phpBB Extension - tas2580 AJAX Userinfo
-* @copyright (c) 2015 tas2580 (https://tas2580.net)
-* @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
-*
-*/
+ *
+ * @package phpBB Extension - tas2580 AJAX Userinfo
+ * @copyright (c) 2015 tas2580 (https://tas2580.net)
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+ *
+ */
+
 namespace tas2580\userinfo\controller;
+
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class user
 {
+
 	/** @var \phpbb\auth\auth  */
 	private $auth;
-	
+
 	/** @var \phpbb\db\driver\driver_interface */
 	private $db;
-	
+
 	/** @var \phpbb\user */
 	protected $user;
-	
+
 	/** @var string */
 	private $usertable;
-	
+
 	/** @var string phpbb_root_path */
 	protected $phpbb_root_path;
-	
+
 	/** @var string php_ext */
 	protected $php_ext;
-	
-	
+
 	/**
-	* Constructor
-	*
-	* @param \phpbb\auth\auth				$auth
-	* @param \phpbb\db\driver\driver_interface	$db
-	* @param \phpbb\user					$user
-	* @param string						$usertable
-	* @param string						$phpbb_root_path
-	* @param string						$php_ext
-	*/
+	 * Constructor
+	 *
+	 * @param \phpbb\auth\auth				$auth
+	 * @param \phpbb\db\driver\driver_interface	$db
+	 * @param \phpbb\user					$user
+	 * @param string						$usertable
+	 * @param string						$phpbb_root_path
+	 * @param string						$php_ext
+	 */
 	public function __construct(\phpbb\auth\auth $auth, \phpbb\db\driver\driver_interface $db, \phpbb\user $user, $usertable, $phpbb_root_path, $php_ext)
 	{
 		$this->auth = $auth;
@@ -49,10 +52,10 @@ class user
 		$this->phpbb_root_path = $phpbb_root_path;
 		$this->php_ext = $php_ext;
 	}
-	
+
 	public function info($user_id)
 	{
-		if(!$this->auth->acl_get('u_viewprofile'))
+		if (!$this->auth->acl_get('u_viewprofile'))
 		{
 			return true;
 		}
