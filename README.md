@@ -26,5 +26,5 @@ LICENSE
 -------
 <a href="http://opensource.org/licenses/gpl-2.0.php">GNU General Public License v2</a>
 
-<img src="https://travis-ci.org/tas2580/phpBB-3.1-AJAX-Userinfo.svg?branch=master" />
+[![Build Status](https://travis-ci.org/tas2580/phpBB-3.1-AJAX-Userinfo.svg?branch=master)](https://travis-ci.org/tas2580/phpBB-3.1-AJAX-Userinfo)
 <img src="https://scrutinizer-ci.com/g/tas2580/phpBB-3.1-AJAX-Userinfo/badges/quality-score.png?b=master" />
