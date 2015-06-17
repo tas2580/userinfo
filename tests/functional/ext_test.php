@@ -14,10 +14,10 @@ class ext_test extends \phpbb_functional_test_case
 {
 	static protected function setup_extensions()
 	{
-		return array('tas2580/whatsapp');
+		return array('tas2580/userinfo');
 	}
 	public function test_socialbuttons()
 	{
-		$this->add_lang_ext('tas2580/whatsapp', 'common');
+		$this->add_lang_ext('tas2580/userinfo', 'common');
 	}
 }
