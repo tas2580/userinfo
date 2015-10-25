@@ -2,9 +2,9 @@
 	"name": "tas2580/userinfo",
 	"type": "phpbb-extension",
 	"description": "Displays a popup with information about users.",
-	"homepage": "https://tas2580.net/downloads/download-13.html",
+	"homepage": "https://tas2580.net/downloads/phpbb-ajax-userinfo/",
 	"version": "0.1.1",
-	"keywords": ["phpbb", "extension", "user"],
+	"keywords": ["phpbb", "extension", "user","ajax"],
 	"license": "GPL-2.0",
 	"authors": [
 		{
