@@ -27,9 +27,9 @@
 			"phpbb/phpbb": ">=3.1.4-RC1,<3.2.*@dev"
 		},
 		"version-check": {
-			"host": "tas2580.net",
-			"directory": "/modules/downloads/version",
-			"filename": "download13.json"
+			"host": "phpbb-versionscheck.cf",
+			"directory": "/tas2580/userinfo/master",
+			"filename": "version-check.json"
 		}
 	}
 }
