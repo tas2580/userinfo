@@ -30,6 +30,9 @@ class listener implements EventSubscriberInterface
 	/* @var \phpbb\controller\helper */
 	protected $helper;
 
+	/* @var \phpbb\path_helper */
+	protected $path_helper;
+
 	/**
 	 * Constructor
 	 *
@@ -39,12 +42,13 @@ class listener implements EventSubscriberInterface
 	 * @param \phpbb\controller\helper			$helper			Controller helper object
 	 * @access public
 	 */
-	public function __construct(\phpbb\user $user, \phpbb\template\template $template, \phpbb\auth\auth $auth, \phpbb\controller\helper $helper)
+	public function __construct(\phpbb\user $user, \phpbb\template\template $template, \phpbb\auth\auth $auth, \phpbb\controller\helper $helper, \phpbb\path_helper $path_helper)
 	{
 		$this->user = $user;
 		$this->template = $template;
 		$this->auth = $auth;
 		$this->helper = $helper;
+		$this->path_helper = $path_helper;
 	}
 
 	/**
@@ -94,11 +98,11 @@ class listener implements EventSubscriberInterface
 		{
 			if ($event['username_colour'])
 			{
-				$event['username_string'] = '<a href="./memberlist.php?mode=viewprofile&amp;u=' . $event['user_id'] . '" onmouseover="show_popup(' . $event['user_id'] . ')" onmouseout="close_popup()" style="color: ' . $event['username_colour'] . ' ;" class="username-coloured">' . $event['username'] . '</a>';
+				$event['username_string'] = '<a href="' . $this->path_helper->update_web_root_path('/memberlist.php?mode=viewprofile&amp;u=' . $event['user_id']) . '" onmouseover="show_popup(' . $event['user_id'] . ')" onmouseout="close_popup()" style="color: ' . $event['username_colour'] . ' ;" class="username-coloured">' . $event['username'] . '</a>';
 			}
 			else
 			{
-				$event['username_string'] = '<a href="./memberlist.php?mode=viewprofile&amp;u=' . $event['user_id'] . '" onmouseover="show_popup(' . $event['user_id'] . ')" onmouseout="close_popup()">' . $event['username'] . '</a>';
+				$event['username_string'] = '<a href="' . $this->path_helper->update_web_root_path('/memberlist.php?mode=viewprofile&amp;u=' . $event['user_id']) . '" onmouseover="show_popup(' . $event['user_id'] . ')" onmouseout="close_popup()">' . $event['username'] . '</a>';
 			}
 		}
 	}
