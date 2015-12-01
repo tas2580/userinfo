@@ -1,65 +1,30 @@
 <!-- IF A_VIEWPROFILE -->
-<script type="text/javascript">
-
-// <![CDATA[
-
-(function($) {
-	'use strict';
-
-	/* Set div to mouse */
-	$(document).mousemove( function(e) {
-		$('#popup').css({'top':e.pageY+20,'left':e.pageX+10});
-	});
-
-	$( "a.username-coloured" ).mouseover(function() {
-		var id = getURLParameter(($(this).attr('href')), 'u');
-
-		var userinfo_url = '{AJAX_USERINFO_PATH}';
-		var url = userinfo_url.replace('USERID', id);
-
-		$.get(url, function( responseText ) {
-			var data = eval (responseText);
-			$('#ajax_username').html(data[0].username);
-			$('#ajax_registert').html(data[0].regdate);
-			$('#ajax_posts').html(data[0].posts);
-			$('#ajax_last_visit').html(data[0].lastvisit);
-			$('#ajax_avatar').html(data[0].avatar);
-			$('#ajax_rank').html(data[0].rank);
-		});
-		$( "#popup" ).show();
-	});
-
-	$( "a.username-coloured" ).mouseout(function() {
-		$( "#popup" ).hide();
-	});
-})(jQuery);
-
-function getURLParameter(url, name) {
-    return (RegExp(name + '=' + '(.+?)(&|$)').exec(url)||[,null])[1];
-}
-
-// ]]>
-</script>
-<div class="forabg" id="popup" style="display: none;">
-	<div class="inner">
-		<span class="corners-top"><span></span></span>
-		<ul class="topiclist fullwidth">
-			<li class="header"><dl><dt>{L_READ_PROFILE}</dt></dl></li>
-		</ul>
-		<ul class="topiclist forums">
-			<li><dl>
-				<dd style="width:100%">
-					<div id="ajax_avatar"></div>
-					<strong>{L_USERNAME}:</strong> <span id="ajax_username"></span><br />
-					<strong>{L_TOTAL_POSTS}:</strong> <span id="ajax_posts"></span><br />
-					<strong>{L_SORT_RANK}:</strong> <span id="ajax_rank"></span><br />
-					<strong>{L_JOINED}:</strong> <span id="ajax_registert"></span><br />
-					<strong>{L_LAST_VISIT}:</strong> <span id="ajax_last_visit"></span><br />
-					<br style="clear: both;" />
-				</dd>
-			</dl></li>
-		</ul>
-		<span class="corners-bottom"><span></span></span>
+	<!-- INCLUDEJS @tas2580_userinfo/script.js -->
+	<script type="text/javascript">
+	// <![CDATA[
+	var userinfo_url = '{AJAX_USERINFO_PATH}';
+	// ]]>
+	</script>
+	<div class="forabg" id="popup" style="display: none;">
+		<div class="inner">
+			<span class="corners-top"><span></span></span>
+			<ul class="topiclist fullwidth">
+				<li class="header"><dl><dt>{L_READ_PROFILE}</dt></dl></li>
+			</ul>
+			<ul class="topiclist forums">
+				<li><dl>
+					<dd style="width:100%">
+						<div id="ajax_avatar"></div>
+						<strong>{L_USERNAME}:</strong> <span id="ajax_username"></span><br>
+						<strong>{L_TOTAL_POSTS}:</strong> <span id="ajax_posts"></span><br>
+						<strong>{L_SORT_RANK}:</strong> <span id="ajax_rank"></span><br>
+						<strong>{L_JOINED}:</strong> <span id="ajax_registert"></span><br>
+						<strong>{L_LAST_VISIT}:</strong> <span id="ajax_last_visit"></span><br>
+						<br class="clear">
+					</dd>
+				</dl></li>
+			</ul>
+			<span class="corners-bottom"><span></span></span>
+		</div>
 	</div>
-</div>
 <!-- ENDIF -->
