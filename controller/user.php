@@ -53,7 +53,7 @@ class user
 	{
 		if (!$this->auth->acl_get('u_viewprofile'))
 		{
-			return true;
+			trigger_error('NOT_AUTHORISED');
 		}
 
 		$sql = 'SELECT *
