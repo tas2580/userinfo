@@ -18,20 +18,15 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class listener implements EventSubscriberInterface
 {
 	/* @var \phpbb\user */
-
 	protected $user;
-
 	/** @var \phpbb\template\template */
 	protected $template;
-
 	/** @var \phpbb\auth\auth  */
 	private $auth;
-
-	/* @var \phpbb\controller\helper */
+	/** @var \phpbb\controller\helper */
 	protected $helper;
 
-	/* @var \phpbb\path_helper */
-	protected $path_helper;
+
 
 	/**
 	 * Constructor
@@ -42,13 +37,12 @@ class listener implements EventSubscriberInterface
 	 * @param \phpbb\controller\helper			$helper			Controller helper object
 	 * @access public
 	 */
-	public function __construct(\phpbb\user $user, \phpbb\template\template $template, \phpbb\auth\auth $auth, \phpbb\controller\helper $helper, \phpbb\path_helper $path_helper)
+	public function __construct(\phpbb\user $user, \phpbb\template\template $template, \phpbb\auth\auth $auth, \phpbb\controller\helper $helper)
 	{
 		$this->user = $user;
 		$this->template = $template;
 		$this->auth = $auth;
 		$this->helper = $helper;
-		$this->path_helper = $path_helper;
 	}
 
 	/**
@@ -62,7 +56,6 @@ class listener implements EventSubscriberInterface
 	{
 		return array(
 			'core.page_header'			=> 'page_header',
-			'core.modify_username_string'	=> 'modify_username_string',
 		);
 	}
 
@@ -77,33 +70,7 @@ class listener implements EventSubscriberInterface
 	{
 		$this->template->assign_vars(array(
 			'AJAX_USERINFO_PATH'	=> $this->helper->route('tas2580_userinfo', array('user_id' => 'USERID')),
+			'A_VIEWPROFILE'		=> $this->auth->acl_get('u_viewprofile'),
 		));
-	}
-
-	/**
-	 * Add JavaScript to profile links
-	 *
-	 * @param	object	$event	The event object
-	 * @return	null
-	 * @access	public
-	 */
-	public function modify_username_string($event)
-	{
-		if (!$this->auth->acl_get('u_viewprofile'))
-		{
-			return true;
-		}
-		// if user is not logged in output no links to profiles
-		if ($event['mode'] == 'full')
-		{
-			if ($event['username_colour'])
-			{
-				$event['username_string'] = '<a href="' . $this->path_helper->update_web_root_path('/memberlist.php?mode=viewprofile&amp;u=' . $event['user_id']) . '" onmouseover="show_popup(' . $event['user_id'] . ')" onmouseout="close_popup()" style="color: ' . $event['username_colour'] . ' ;" class="username-coloured">' . $event['username'] . '</a>';
-			}
-			else
-			{
-				$event['username_string'] = '<a href="' . $this->path_helper->update_web_root_path('/memberlist.php?mode=viewprofile&amp;u=' . $event['user_id']) . '" onmouseover="show_popup(' . $event['user_id'] . ')" onmouseout="close_popup()">' . $event['username'] . '</a>';
-			}
-		}
 	}
 }

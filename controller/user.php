@@ -14,22 +14,16 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class user
 {
-
 	/** @var \phpbb\auth\auth  */
 	private $auth;
-
 	/** @var \phpbb\db\driver\driver_interface */
 	private $db;
-
 	/** @var \phpbb\user */
 	protected $user;
-
 	/** @var string */
 	private $usertable;
-
 	/** @var string phpbb_root_path */
 	protected $phpbb_root_path;
-
 	/** @var string php_ext */
 	protected $php_ext;
 
@@ -59,6 +53,8 @@ class user
 		{
 			return true;
 		}
+
+		$temp_ARY = $this->template->get_user_style();
 
 		$sql = 'SELECT *
 			FROM ' . $this->usertable . '

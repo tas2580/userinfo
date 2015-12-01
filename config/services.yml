@@ -6,7 +6,6 @@ services:
             - @template
             - @auth
             - @controller.helper
-            - @path_helper
         tags:
             - { name: event.listener }
     tas2580.userinfo.user:
