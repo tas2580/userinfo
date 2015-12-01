@@ -1,4 +1,4 @@
-<img src="https://tas2580.net/downloads/image-13.png" width="600" height="80" alt="phpBB 3.1 - AJAX Userinfo" />
+<img src="https://tas2580.net/downloads/phpbb-ajax-userinfo/image.png" width="600" height="80" alt="phpBB 3.1 - AJAX Userinfo" />
 
 This is an extension for the phpBB forums software. You need an instalation of phpBB 3.1.x to use this.
 
@@ -14,9 +14,9 @@ this extension in the list of extensions and click on Enable.
 
 SUPPORT
 -------
-You can get support for this extension on <a href="https://www.phpbb.com/community/viewtopic.php?f=456&t=2281326">phpbb.com</a>
-or in german on <a href="https://www.phpbb.de/community/viewtopic.php?f=149&t=232974">phpbb.de</a>. For more informations look at
-<a href="https://tas2580.net/downloads/download-13.html">my Website</a>.
+You can get support for this extension on <a href="https://www.phpbb.com/community/viewtopic.php?f=456&t=2319121">phpbb.com</a>
+or in german on <a href="https://www.phpbb.de/community/viewtopic.php?f=149&t=234605">phpbb.de</a>. For more informations look at
+<a href="https://tas2580.net/downloads/phpbb-ajax-userinfo/">my Website</a>.
 
 Help to translate
 -----------------
