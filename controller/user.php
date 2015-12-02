@@ -69,6 +69,7 @@ class user
 		$template = $this->template->get_user_style();
 
 		$avatar = phpbb_get_user_avatar($this->data);
+		$avatar = str_replace('./../../', $this->phpbb_root_path, $avatar);
 		$avatar = empty($avatar) ? '<img src="' . $this->phpbb_root_path . 'styles/' . $template[0] . '/theme/images/no_avatar.gif" width="100" height="100" alt="' . $this->user->lang('USER_AVATAR') . '">' : $avatar;
 
 		$result = array(
