@@ -13,6 +13,7 @@ services:
         arguments:
             - @auth
             - @dbal.conn
+            - @dispatcher
             - @user
             - @template
             - %tables.users%
