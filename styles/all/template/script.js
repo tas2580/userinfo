@@ -1,7 +1,7 @@
 (function($) {
 	'use strict';
 
-	
+
 	/* Set div to mouse */
 	$(document).mousemove( function(e) {
 		$('#popup').css({'top':e.pageY+20,'left':e.pageX+10});
@@ -18,6 +18,9 @@
 	function hide_userinfo(){
 		show_popup = false;
 		$( "#popup" ).hide();
+		$( "#popup" ).find('span').each(function(){
+			$(this).html('');
+		});
 	}
 })(jQuery);
 
