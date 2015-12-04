@@ -12,10 +12,10 @@
 	$( "a.username-coloured" ).mouseout(hide_userinfo);
 
 	/* Hide the info popup */
-	function hide_userinfo(){
+	function hide_userinfo() {
 		show_popup = false;
 		$( "#popup" ).hide();
-		$( "#popup" ).find('span').each(function(){
+		$( "#popup" ).find('span').each(function() {
 			$(this).html('');
 		});
 	}

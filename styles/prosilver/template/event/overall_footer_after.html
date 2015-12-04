@@ -7,7 +7,7 @@
 	var userinfo_url = '{AJAX_USERINFO_PATH}';
 
 	/* Display the info popup */
-	function display_userinfo(){
+	function display_userinfo() {
 		show_popup = true;
 		var id = getURLParameter(($(this).attr('href')), 'u');
 		var url = userinfo_url.replace('USERID', id);
@@ -21,8 +21,7 @@
 			$('#ajax_avatar').html(data[0].avatar);
 			$('#ajax_rank').html(data[0].rank);
 			<!-- EVENT tas2580_userinfo_js_insert_data -->
-			if (show_popup)
-			{
+			if (show_popup) {
 				$( "#popup" ).show();
 			}
 		});

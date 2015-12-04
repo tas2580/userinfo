@@ -1,5 +1,4 @@
 <?php
-
 /**
  *
  * @package phpBB Extension - tas2580 AJAX Userinfo
@@ -17,7 +16,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class listener implements EventSubscriberInterface
 {
-	/* @var \phpbb\user */
+	/** @var \phpbb\user */
 	protected $user;
 	/** @var \phpbb\template\template */
 	protected $template;
@@ -25,8 +24,6 @@ class listener implements EventSubscriberInterface
 	private $auth;
 	/** @var \phpbb\controller\helper */
 	protected $helper;
-
-
 
 	/**
 	 * Constructor
