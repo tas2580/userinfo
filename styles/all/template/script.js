@@ -7,7 +7,13 @@
 		$('#popup').css({'top':e.pageY+20,'left':e.pageX+10});
 	});
 
-	$( "a.username-coloured" ).mouseover(function() {
+	$( "a.username" ).mouseover(display_userinfo);
+	$( "a.username" ).mouseout(hide_userinfo);
+	$( "a.username-coloured" ).mouseover(display_userinfo);
+	$( "a.username-coloured" ).mouseout(hide_userinfo);
+
+	/* Display the info popup */
+	function display_userinfo(){
 		show_popup = true;
 		var id = getURLParameter(($(this).attr('href')), 'u');
 		var url = userinfo_url.replace('USERID', id);
@@ -25,15 +31,15 @@
 				$( "#popup" ).show();
 			}
 		});
+	}
 
-	});
-
-	$( "a.username-coloured" ).mouseout(function() {
+	/* Hide the info popup */
+	function hide_userinfo(){
 		show_popup = false;
 		$( "#popup" ).hide();
-	});
+	}
 })(jQuery);
 
 function getURLParameter(url, name) {
-    return (RegExp(name + '=' + '(.+?)(&|$)').exec(url)||[,null])[1];
+	return (RegExp(name + '=' + '(.+?)(&|$)').exec(url)||[,null])[1];
 }
