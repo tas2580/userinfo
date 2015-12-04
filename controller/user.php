@@ -17,6 +17,8 @@ class user
 	private $auth;
 	/** @var \phpbb\db\driver\driver_interface */
 	private $db;
+	/** @var \phpbb\event\dispatcher_interface */
+	protected $phpbb_dispatcher;
 	/** @var \phpbb\user */
 	protected $user;
 	/** @var \phpbb\template\template */
@@ -38,10 +40,11 @@ class user
 	 * @param string						$phpbb_root_path
 	 * @param string						$php_ext
 	 */
-	public function __construct(\phpbb\auth\auth $auth, \phpbb\db\driver\driver_interface $db, \phpbb\user $user, \phpbb\template\template $template, $usertable, $phpbb_root_path, $php_ext)
+	public function __construct(\phpbb\auth\auth $auth, \phpbb\db\driver\driver_interface $db, \phpbb\event\dispatcher_interface $phpbb_dispatcher, \phpbb\user $user, \phpbb\template\template $template, $usertable, $phpbb_root_path, $php_ext)
 	{
 		$this->auth = $auth;
 		$this->db = $db;
+		$this->phpbb_dispatcher = $phpbb_dispatcher;
 		$this->user = $user;
 		$this->template = $template;
 		$this->usertable = $usertable;
@@ -59,6 +62,17 @@ class user
 		$sql = 'SELECT username, user_colour, user_regdate, user_posts, user_lastvisit, user_rank, user_avatar, user_avatar_type, user_avatar_width, user_avatar_height
 			FROM ' . $this->usertable . '
 			WHERE user_id = ' . (int) $user_id;
+
+		/**
+		* Modify SQL query in tas2580 AJAX userinfo extension
+		*
+		* @event tas2580.userinfo_modify_sql
+		* @var    string		sql	The SQL query
+		* @since 0.2.3
+		*/
+		$vars = array('sql');
+		extract($this->phpbb_dispatcher->trigger_event('tas2580.userinfo_modify_sql', compact($vars)));
+
 		$result = $this->db->sql_query_limit($sql, 1);
 		$this->data = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
@@ -80,6 +94,17 @@ class user
 			'avatar'		=> $avatar,
 			'rank'		=> empty($user_rank_data['title']) ? $this->user->lang('NA') : $user_rank_data['title'],
 		);
+
+		/**
+		* Modify return data in tas2580 AJAX userinfo extension
+		*
+		* @event tas2580.userinfo_modify_result
+		* @var    array	result	The result array
+		* @var    int	user_id	The ID of the user
+		* @since 0.2.3
+		*/
+		$vars = array('result', 'user_id');
+		extract($this->phpbb_dispatcher->trigger_event('tas2580.userinfo_modify_result', compact($vars)));
 
 		return new JsonResponse(array($result));
 	}
