@@ -15,6 +15,8 @@ class user
 {
 	/** @var \phpbb\auth\auth  */
 	private $auth;
+	/** @var \phpbb\config\config */
+	protected $config;
 	/** @var \phpbb\db\driver\driver_interface */
 	private $db;
 	/** @var \phpbb\event\dispatcher_interface */
@@ -34,15 +36,17 @@ class user
 	 * Constructor
 	 *
 	 * @param \phpbb\auth\auth				$auth
+	 * @param \phpbb\config\config			$config         Config object
 	 * @param \phpbb\db\driver\driver_interface	$db
 	 * @param \phpbb\user					$user
 	 * @param string						$usertable
 	 * @param string						$phpbb_root_path
 	 * @param string						$php_ext
 	 */
-	public function __construct(\phpbb\auth\auth $auth, \phpbb\db\driver\driver_interface $db, \phpbb\event\dispatcher_interface $phpbb_dispatcher, \phpbb\user $user, \phpbb\template\template $template, $usertable, $phpbb_root_path, $php_ext)
+	public function __construct(\phpbb\auth\auth $auth, \phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\event\dispatcher_interface $phpbb_dispatcher, \phpbb\user $user, \phpbb\template\template $template, $usertable, $phpbb_root_path, $php_ext)
 	{
 		$this->auth = $auth;
+		$this->config = $config;
 		$this->db = $db;
 		$this->phpbb_dispatcher = $phpbb_dispatcher;
 		$this->user = $user;
@@ -54,9 +58,9 @@ class user
 
 	public function info($user_id)
 	{
-		if (!$this->auth->acl_get('u_viewprofile'))
+		if (!$this->auth->acl_get('u_viewprofile', 'a_user', 'a_useradd', 'a_userdel') || $user_id == ANONYMOUS)
 		{
-			trigger_error('NOT_AUTHORISED');
+			return;
 		}
 
 		$sql = 'SELECT username, user_colour, user_regdate, user_posts, user_lastvisit, user_rank, user_avatar, user_avatar_type, user_avatar_width, user_avatar_height
@@ -85,6 +89,9 @@ class user
 		define('PHPBB_USE_BOARD_URL_PATH', true);
 		$avatar = phpbb_get_user_avatar($this->data);
 		$avatar = empty($avatar) ? '<img src="' . $this->phpbb_root_path . 'styles/' . $template[0] . '/theme/images/no_avatar.gif" width="100" height="100" alt="' . $this->user->lang('USER_AVATAR') . '">' : $avatar;
+		$memberdays = max(1, round((time() - $this->data['user_regdate']) / 86400));
+		$posts_per_day = $this->data['user_posts'] / $memberdays;
+		$percentage = ($this->config['num_posts']) ? min(100, ($this->data['user_posts'] / $this->config['num_posts']) * 100) : 0;
 
 		$result = array(
 			'username'	=> get_username_string('username', $user_id, $this->data['username'], $this->data['user_colour']),
@@ -93,6 +100,8 @@ class user
 			'lastvisit'		=> $this->user->format_date($this->data['user_lastvisit']),
 			'avatar'		=> $avatar,
 			'rank'		=> empty($user_rank_data['title']) ? $this->user->lang('NA') : $user_rank_data['title'],
+			'postsperday'	=> $this->user->lang('POST_DAY', $posts_per_day),
+			'percentage'	=> $this->user->lang('POST_PCT', $percentage),
 		);
 
 		/**

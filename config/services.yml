@@ -12,6 +12,7 @@ services:
         class: tas2580\userinfo\controller\user
         arguments:
             - @auth
+            - @config
             - @dbal.conn
             - @dispatcher
             - @user
