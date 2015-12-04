@@ -56,7 +56,7 @@ class user
 			trigger_error('NOT_AUTHORISED');
 		}
 
-		$sql = 'SELECT *
+		$sql = 'SELECT username, user_colour, user_regdate, user_posts, user_lastvisit, user_rank, user_avatar, user_avatar_type, user_avatar_width, user_avatar_height
 			FROM ' . $this->usertable . '
 			WHERE user_id = ' . (int) $user_id;
 		$result = $this->db->sql_query_limit($sql, 1);
@@ -68,8 +68,8 @@ class user
 
 		$template = $this->template->get_user_style();
 
+		define('PHPBB_USE_BOARD_URL_PATH', true);
 		$avatar = phpbb_get_user_avatar($this->data);
-		$avatar = str_replace('./../../', $this->phpbb_root_path, $avatar);
 		$avatar = empty($avatar) ? '<img src="' . $this->phpbb_root_path . 'styles/' . $template[0] . '/theme/images/no_avatar.gif" width="100" height="100" alt="' . $this->user->lang('USER_AVATAR') . '">' : $avatar;
 
 		$result = array(
@@ -78,7 +78,7 @@ class user
 			'posts'		=> $this->data['user_posts'],
 			'lastvisit'		=> $this->user->format_date($this->data['user_lastvisit']),
 			'avatar'		=> $avatar,
-			'rank'		=> $user_rank_data['title'],
+			'rank'		=> empty($user_rank_data['title']) ? $this->user->lang('NA') : $user_rank_data['title'],
 		);
 
 		return new JsonResponse(array($result));
