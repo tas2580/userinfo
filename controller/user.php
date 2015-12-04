@@ -56,7 +56,7 @@ class user
 			trigger_error('NOT_AUTHORISED');
 		}
 
-		$sql = 'SELECT *
+		$sql = 'SELECT username, user_colour, user_regdate, user_posts, user_lastvisit, user_rank, user_avatar, user_avatar_type, user_avatar_width, user_avatar_height
 			FROM ' . $this->usertable . '
 			WHERE user_id = ' . (int) $user_id;
 		$result = $this->db->sql_query_limit($sql, 1);
