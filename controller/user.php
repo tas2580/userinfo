@@ -78,7 +78,7 @@ class user
 			'posts'		=> $this->data['user_posts'],
 			'lastvisit'		=> $this->user->format_date($this->data['user_lastvisit']),
 			'avatar'		=> $avatar,
-			'rank'		=> $user_rank_data['title'],
+			'rank'		=> empty($user_rank_data['title']) ? $this->user->lang('NA') : $user_rank_data['title'],
 		);
 
 		return new JsonResponse(array($result));
