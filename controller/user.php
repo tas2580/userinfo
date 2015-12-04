@@ -54,7 +54,7 @@ class user
 
 	public function info($user_id)
 	{
-		if (!$this->auth->acl_get('u_viewprofile', 'a_user', 'a_useradd', 'a_userdel') || $user_id == ANONYMOUS)
+		if (!$this->auth->acl_gets('u_viewprofile', 'a_user', 'a_useradd', 'a_userdel') || $user_id == ANONYMOUS)
 		{
 			return;
 		}
@@ -94,12 +94,12 @@ class user
 		$percentage = ($this->config['num_posts']) ? min(100, ($this->data['user_posts'] / $this->config['num_posts']) * 100) : 0;
 
 		$result = array(
-			'username'	=> get_username_string('username', $user_id, $this->data['username'], $this->data['user_colour']),
+			'username'		=> get_username_string('full', $user_id, $this->data['username'], $this->data['user_colour']),
 			'regdate'		=> $this->user->format_date($this->data['user_regdate']),
-			'posts'		=> $this->data['user_posts'],
+			'posts'			=> $this->data['user_posts'],
 			'lastvisit'		=> $this->user->format_date($this->data['user_lastvisit']),
 			'avatar'		=> $avatar,
-			'rank'		=> empty($user_rank_data['title']) ? $this->user->lang('NA') : $user_rank_data['title'],
+			'rank'			=> empty($user_rank_data['title']) ? $this->user->lang('NA') : $user_rank_data['title'],
 			'postsperday'	=> $this->user->lang('POST_DAY', $posts_per_day),
 			'percentage'	=> $this->user->lang('POST_PCT', $percentage),
 		);
