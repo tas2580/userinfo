@@ -17,6 +17,5 @@ services:
             - @dispatcher
             - @user
             - @template
-            - %tables.users%
             - %core.root_path%
             - %core.php_ext%
