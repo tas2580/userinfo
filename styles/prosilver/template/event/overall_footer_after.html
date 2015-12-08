@@ -1,5 +1,4 @@
 <!-- IF A_VIEWPROFILE -->
-
 	<!-- INCLUDEJS @tas2580_userinfo/script.js -->
 	<script type="text/javascript">
 	// <![CDATA[
@@ -7,7 +6,7 @@
 	var userinfo_url = '{AJAX_USERINFO_PATH}';
 	// ]]>
 	</script>
-	<div class="forabg" id="popup" style="display: none;">
+	<div class="forabg" id="popup">
 		<div class="inner">
 			<span class="corners-top"><span></span></span>
 			<ul class="topiclist fullwidth">
@@ -21,8 +20,8 @@
 						<strong>{L_TOTAL_POSTS}:</strong> <span id="ajax_posts"></span><br>
 						(<span id="ajax_percentage"></span> / <span id="ajax_postsperday"></span>)<br>
 						<strong>{L_SORT_RANK}:</strong> <span id="ajax_rank"></span><br>
-						<strong>{L_JOINED}:</strong> <span id="ajax_registert"></span><br>
-						<strong>{L_LAST_VISIT}:</strong> <span id="ajax_last_visit"></span><br>
+						<strong>{L_JOINED}:</strong> <span id="ajax_regdate"></span><br>
+						<strong>{L_LAST_VISIT}:</strong> <span id="ajax_lastvisit"></span><br>
 						<!-- EVENT tas2580_userinfo_data -->
 						<br class="clear">
 					</dd>

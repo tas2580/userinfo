@@ -2,10 +2,9 @@ services:
     tas2580.userinfo.listener:
         class: tas2580\userinfo\event\listener
         arguments:
-            - @user
-            - @template
             - @auth
             - @controller.helper
+            - @template
         tags:
             - { name: event.listener }
     tas2580.userinfo.user:

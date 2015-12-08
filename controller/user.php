@@ -15,30 +15,39 @@ class user
 {
 	/** @var \phpbb\auth\auth  */
 	private $auth;
+
 	/** @var \phpbb\config\config */
 	protected $config;
+
 	/** @var \phpbb\db\driver\driver_interface */
 	private $db;
+
 	/** @var \phpbb\event\dispatcher_interface */
 	protected $phpbb_dispatcher;
+
 	/** @var \phpbb\user */
 	protected $user;
+
 	/** @var \phpbb\template\template */
 	protected $template;
+
 	/** @var string phpbb_root_path */
 	protected $phpbb_root_path;
+	
 	/** @var string php_ext */
 	protected $php_ext;
 
 	/**
 	 * Constructor
 	 *
-	 * @param \phpbb\auth\auth				$auth
-	 * @param \phpbb\config\config			$config         Config object
-	 * @param \phpbb\db\driver\driver_interface	$db
-	 * @param \phpbb\user					$user
-	 * @param string						$phpbb_root_path
-	 * @param string						$php_ext
+	 * @param \phpbb\auth\auth					$auth
+	 * @param \phpbb\config\config				$config         Config object
+	 * @param \phpbb\db\driver\driver_interface		$db
+	 * @param \\phpbb\event\dispatcher_interface	$phpbb_dispatcher
+	 * @param \phpbb\user						$user
+	 * @param \phpbb\template\template			$template
+	 * @param string							$phpbb_root_path
+	 * @param string							$php_ext
 	 */
 	public function __construct(\phpbb\auth\auth $auth, \phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\event\dispatcher_interface $phpbb_dispatcher, \phpbb\user $user, \phpbb\template\template $template, $phpbb_root_path, $php_ext)
 	{
@@ -72,9 +81,10 @@ class user
 		*
 		* @event tas2580.userinfo_modify_sql
 		* @var    string		sql_ary	The SQL query
+		* @var    int		user_id	The ID of the user
 		* @since 0.2.3
 		*/
-		$vars = array('sql_ary');
+		$vars = array('sql_ary', 'user_id');
 		extract($this->phpbb_dispatcher->trigger_event('tas2580.userinfo_modify_sql', compact($vars)));
 
 		$result = $this->db->sql_query_limit($this->db->sql_build_query('SELECT', $sql_ary), 1);
@@ -86,9 +96,12 @@ class user
 
 		$template = $this->template->get_user_style();
 
+		// Get the avatar
+		// Wen need to use the full URL here because we don't know the path where userinfo is called
 		define('PHPBB_USE_BOARD_URL_PATH', true);
 		$avatar = phpbb_get_user_avatar($this->data);
-		$avatar = empty($avatar) ? '<img src="' . $this->phpbb_root_path . 'styles/' . $template[0] . '/theme/images/no_avatar.gif" width="100" height="100" alt="' . $this->user->lang('USER_AVATAR') . '">' : $avatar;
+		$avatar = empty($avatar) ? '<img src="' . generate_board_url() . '/styles/' . $template[0] . '/theme/images/no_avatar.gif" width="100" height="100" alt="' . $this->user->lang('USER_AVATAR') . '">' : $avatar;
+
 		$memberdays = max(1, round((time() - $this->data['user_regdate']) / 86400));
 		$posts_per_day = $this->data['user_posts'] / $memberdays;
 		$percentage = ($this->config['num_posts']) ? min(100, ($this->data['user_posts'] / $this->config['num_posts']) * 100) : 0;
