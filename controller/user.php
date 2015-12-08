@@ -15,6 +15,8 @@ class user
 {
 	/** @var \phpbb\auth\auth  */
 	private $auth;
+	/** @var \phpbb\config\config */
+	protected $config;
 	/** @var \phpbb\db\driver\driver_interface */
 	private $db;
 	/** @var \phpbb\event\dispatcher_interface */
@@ -23,8 +25,6 @@ class user
 	protected $user;
 	/** @var \phpbb\template\template */
 	protected $template;
-	/** @var string */
-	private $usertable;
 	/** @var string phpbb_root_path */
 	protected $phpbb_root_path;
 	/** @var string php_ext */
@@ -34,46 +34,50 @@ class user
 	 * Constructor
 	 *
 	 * @param \phpbb\auth\auth				$auth
+	 * @param \phpbb\config\config			$config         Config object
 	 * @param \phpbb\db\driver\driver_interface	$db
 	 * @param \phpbb\user					$user
-	 * @param string						$usertable
 	 * @param string						$phpbb_root_path
 	 * @param string						$php_ext
 	 */
-	public function __construct(\phpbb\auth\auth $auth, \phpbb\db\driver\driver_interface $db, \phpbb\event\dispatcher_interface $phpbb_dispatcher, \phpbb\user $user, \phpbb\template\template $template, $usertable, $phpbb_root_path, $php_ext)
+	public function __construct(\phpbb\auth\auth $auth, \phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\event\dispatcher_interface $phpbb_dispatcher, \phpbb\user $user, \phpbb\template\template $template, $phpbb_root_path, $php_ext)
 	{
 		$this->auth = $auth;
+		$this->config = $config;
 		$this->db = $db;
 		$this->phpbb_dispatcher = $phpbb_dispatcher;
 		$this->user = $user;
 		$this->template = $template;
-		$this->usertable = $usertable;
 		$this->phpbb_root_path = $phpbb_root_path;
 		$this->php_ext = $php_ext;
 	}
 
 	public function info($user_id)
 	{
-		if (!$this->auth->acl_get('u_viewprofile'))
+		if (!$this->auth->acl_gets('u_viewprofile', 'a_user', 'a_useradd', 'a_userdel') || $user_id == ANONYMOUS)
 		{
-			trigger_error('NOT_AUTHORISED');
+			return;
 		}
 
-		$sql = 'SELECT username, user_colour, user_regdate, user_posts, user_lastvisit, user_rank, user_avatar, user_avatar_type, user_avatar_width, user_avatar_height
-			FROM ' . $this->usertable . '
-			WHERE user_id = ' . (int) $user_id;
+		$sql_ary = array(
+			'SELECT'	=> 'u.username, u.user_colour, u.user_regdate, u.user_posts, u.user_lastvisit, u.user_rank, u.user_avatar, u.user_avatar_type, u.user_avatar_width, u.user_avatar_height',
+			'FROM'		=> array(
+				USERS_TABLE	=> 'u',
+			),
+			'WHERE'	=>	'user_id = ' . (int) $user_id,
+		);
 
 		/**
 		* Modify SQL query in tas2580 AJAX userinfo extension
 		*
 		* @event tas2580.userinfo_modify_sql
-		* @var    string		sql	The SQL query
+		* @var    string		sql_ary	The SQL query
 		* @since 0.2.3
 		*/
-		$vars = array('sql');
+		$vars = array('sql_ary');
 		extract($this->phpbb_dispatcher->trigger_event('tas2580.userinfo_modify_sql', compact($vars)));
 
-		$result = $this->db->sql_query_limit($sql, 1);
+		$result = $this->db->sql_query_limit($this->db->sql_build_query('SELECT', $sql_ary), 1);
 		$this->data = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
 
@@ -85,14 +89,19 @@ class user
 		define('PHPBB_USE_BOARD_URL_PATH', true);
 		$avatar = phpbb_get_user_avatar($this->data);
 		$avatar = empty($avatar) ? '<img src="' . $this->phpbb_root_path . 'styles/' . $template[0] . '/theme/images/no_avatar.gif" width="100" height="100" alt="' . $this->user->lang('USER_AVATAR') . '">' : $avatar;
+		$memberdays = max(1, round((time() - $this->data['user_regdate']) / 86400));
+		$posts_per_day = $this->data['user_posts'] / $memberdays;
+		$percentage = ($this->config['num_posts']) ? min(100, ($this->data['user_posts'] / $this->config['num_posts']) * 100) : 0;
 
 		$result = array(
-			'username'	=> get_username_string('username', $user_id, $this->data['username'], $this->data['user_colour']),
+			'username'		=> get_username_string('full', $user_id, $this->data['username'], $this->data['user_colour']),
 			'regdate'		=> $this->user->format_date($this->data['user_regdate']),
-			'posts'		=> $this->data['user_posts'],
+			'posts'			=> $this->data['user_posts'],
 			'lastvisit'		=> $this->user->format_date($this->data['user_lastvisit']),
 			'avatar'		=> $avatar,
-			'rank'		=> empty($user_rank_data['title']) ? $this->user->lang('NA') : $user_rank_data['title'],
+			'rank'			=> empty($user_rank_data['title']) ? $this->user->lang('NA') : $user_rank_data['title'],
+			'postsperday'	=> $this->user->lang('POST_DAY', $posts_per_day),
+			'percentage'	=> $this->user->lang('POST_PCT', $percentage),
 		);
 
 		/**

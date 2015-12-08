@@ -12,10 +12,10 @@ services:
         class: tas2580\userinfo\controller\user
         arguments:
             - @auth
+            - @config
             - @dbal.conn
             - @dispatcher
             - @user
             - @template
-            - %tables.users%
             - %core.root_path%
             - %core.php_ext%
