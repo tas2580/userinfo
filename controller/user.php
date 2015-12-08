@@ -84,7 +84,7 @@ class user
 
 		define('PHPBB_USE_BOARD_URL_PATH', true);
 		$avatar = phpbb_get_user_avatar($this->data);
-		$avatar = empty($avatar) ? '<img src="' . $this->phpbb_root_path . 'styles/' . $template[0] . '/theme/images/no_avatar.gif" width="100" height="100" alt="' . $this->user->lang('USER_AVATAR') . '">' : $avatar;
+		$avatar = empty($avatar) ? '<img src="' . generate_board_url() . '/styles/' . $template[0] . '/theme/images/no_avatar.gif" width="100" height="100" alt="' . $this->user->lang('USER_AVATAR') . '">' : $avatar;
 
 		$result = array(
 			'username'	=> get_username_string('username', $user_id, $this->data['username'], $this->data['user_colour']),
