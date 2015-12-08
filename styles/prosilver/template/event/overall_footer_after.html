@@ -5,30 +5,6 @@
 	// <![CDATA[
 	var show_popup = true;
 	var userinfo_url = '{AJAX_USERINFO_PATH}';
-
-	/* Display the info popup */
-	function display_userinfo(){
-		show_popup = true;
-		var id = getURLParameter(($(this).attr('href')), 'u');
-		var url = userinfo_url.replace('USERID', id);
-
-		$.get(url, function( responseText ) {
-			var data = eval (responseText);
-			$('#ajax_username').html(data[0].username);
-			$('#ajax_registert').html(data[0].regdate);
-			$('#ajax_posts').html(data[0].posts);
-			$('#ajax_last_visit').html(data[0].lastvisit);
-			$('#ajax_avatar').html(data[0].avatar);
-			$('#ajax_rank').html(data[0].rank);
-			$('#ajax_postsperday').html(data[0].postsperday);
-			$('#ajax_percentage').html(data[0].percentage);
-			<!-- EVENT tas2580_userinfo_js_insert_data -->
-			if (show_popup)
-			{
-				$( "#popup" ).show();
-			}
-		});
-	}
 	// ]]>
 	</script>
 	<div class="forabg" id="popup" style="display: none;">
