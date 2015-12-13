@@ -28,9 +28,6 @@ class user
 	/** @var \phpbb\user */
 	protected $user;
 
-	/** @var \phpbb\template\template */
-	protected $template;
-
 	/** @var string phpbb_root_path */
 	protected $phpbb_root_path;
 
@@ -40,23 +37,21 @@ class user
 	/**
 	 * Constructor
 	 *
-	 * @param \phpbb\auth\auth					$auth
-	 * @param \phpbb\config\config				$config         Config object
+	 * @param \phpbb\auth\auth						$auth
+	 * @param \phpbb\config\config					$config				Config object
 	 * @param \phpbb\db\driver\driver_interface		$db
 	 * @param \\phpbb\event\dispatcher_interface	$phpbb_dispatcher
-	 * @param \phpbb\user						$user
-	 * @param \phpbb\template\template			$template
-	 * @param string							$phpbb_root_path
-	 * @param string							$php_ext
+	 * @param \phpbb\user							$user
+	 * @param string								$phpbb_root_path
+	 * @param string								$php_ext
 	 */
-	public function __construct(\phpbb\auth\auth $auth, \phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\event\dispatcher_interface $phpbb_dispatcher, \phpbb\user $user, \phpbb\template\template $template, $phpbb_root_path, $php_ext)
+	public function __construct(\phpbb\auth\auth $auth, \phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\event\dispatcher_interface $phpbb_dispatcher, \phpbb\user $user, $phpbb_root_path, $php_ext)
 	{
 		$this->auth = $auth;
 		$this->config = $config;
 		$this->db = $db;
 		$this->phpbb_dispatcher = $phpbb_dispatcher;
 		$this->user = $user;
-		$this->template = $template;
 		$this->phpbb_root_path = $phpbb_root_path;
 		$this->php_ext = $php_ext;
 	}
@@ -73,7 +68,7 @@ class user
 			'FROM'		=> array(
 				USERS_TABLE	=> 'u',
 			),
-			'WHERE'	=>	'user_id = ' . (int) $user_id,
+			'WHERE'	=>	'u.user_id = ' . (int) $user_id,
 		);
 
 		/**
@@ -94,20 +89,20 @@ class user
 		include($this->phpbb_root_path . 'includes/functions_display.' . $this->php_ext);
 		$user_rank_data = phpbb_get_user_rank($this->data, $this->data['user_posts']);
 
-		$template = $this->template->get_user_style();
+		$template = $this->user->style['style_name'];
 
 		// Get the avatar
 		// Wen need to use the full URL here because we don't know the path where userinfo is called
 		define('PHPBB_USE_BOARD_URL_PATH', true);
 		$avatar = phpbb_get_user_avatar($this->data);
-		$avatar = empty($avatar) ? '<img src="' . generate_board_url() . '/styles/' . $template[0] . '/theme/images/no_avatar.gif" width="100" height="100" alt="' . $this->user->lang('USER_AVATAR') . '">' : $avatar;
+		$avatar = empty($avatar) ? '<img src="' . generate_board_url() . '/styles/' . $template . '/theme/images/no_avatar.gif" width="100" height="100" alt="' . $this->user->lang('USER_AVATAR') . '">' : $avatar;
 
 		$memberdays = max(1, round((time() - $this->data['user_regdate']) / 86400));
 		$posts_per_day = $this->data['user_posts'] / $memberdays;
 		$percentage = ($this->config['num_posts']) ? min(100, ($this->data['user_posts'] / $this->config['num_posts']) * 100) : 0;
 
 		$result = array(
-			'username'		=> get_username_string('full', $user_id, $this->data['username'], $this->data['user_colour']),
+			'username'		=> get_username_string('no_profile', $user_id, $this->data['username'], $this->data['user_colour']),
 			'regdate'		=> $this->user->format_date($this->data['user_regdate']),
 			'posts'			=> $this->data['user_posts'],
 			'lastvisit'		=> $this->user->format_date($this->data['user_lastvisit']),
@@ -128,6 +123,6 @@ class user
 		$vars = array('result', 'user_id');
 		extract($this->phpbb_dispatcher->trigger_event('tas2580.userinfo_modify_result', compact($vars)));
 
-		return new JsonResponse(array($result));
+		return new JsonResponse($result);
 	}
 }
