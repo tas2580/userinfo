@@ -28,7 +28,6 @@ class listener implements EventSubscriberInterface
 	/**
 	 * Constructor
 	 *
-	 * @param \phpbb\user					$user			User Object
 	 * @param \phpbb\template\template		$template			Template object
 	 * @param \phpbb\auth\auth				$auth			Auth Object
 	 * @param \phpbb\controller\helper			$helper			Controller helper object
