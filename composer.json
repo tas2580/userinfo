@@ -3,7 +3,7 @@
 	"type": "phpbb-extension",
 	"description": "Displays a popup with information about users.",
 	"homepage": "https://tas2580.net/downloads/phpbb-ajax-userinfo/",
-	"version": "1.0.0-RC1",
+	"version": "1.0.0-RC2",
 	"keywords": ["phpbb", "extension", "user","ajax"],
 	"license": "GPL-2.0",
 	"authors": [
@@ -24,7 +24,7 @@
 	"extra": {
 		"display-name": "tas2580 AJAX Userinfo",
 		"soft-require": {
-			"phpbb/phpbb": ">=3.1.4-RC1,<3.2.*@dev"
+			"phpbb/phpbb": ">=3.1.4-RC1,<3.2.0@dev"
 		},
 		"version-check": {
 			"host": "phpbb-versionscheck.cf",
