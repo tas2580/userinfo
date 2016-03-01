@@ -41,7 +41,7 @@
 					});
 					$( "#popup" ).show();
 				}
-			}, 500);
+			}, 200);
 		},
 		function(){
 			clearTimeout(timeout);
