@@ -86,7 +86,10 @@ class user
 		$this->data = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
 
-		include($this->phpbb_root_path . 'includes/functions_display.' . $this->php_ext);
+		if (!function_exists('phpbb_get_user_rank'))
+		{
+			include($this->phpbb_root_path . 'includes/functions_display.' . $this->php_ext);
+		}
 		$user_rank_data = phpbb_get_user_rank($this->data, $this->data['user_posts']);
 
 		$template = $this->user->style['style_name'];
