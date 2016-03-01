@@ -58,7 +58,7 @@ class user
 
 	public function info($user_id)
 	{
-		if (!$this->auth->acl_gets('u_viewprofile', 'a_user', 'a_useradd', 'a_userdel') || $user_id == ANONYMOUS)
+		if (!$this->auth->acl_gets('u_viewprofile'))
 		{
 			trigger_error('NOT_AUTHORISED');
 		}
