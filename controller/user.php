@@ -54,6 +54,8 @@ class user
 		$this->user = $user;
 		$this->phpbb_root_path = $phpbb_root_path;
 		$this->php_ext = $php_ext;
+	
+		$this->user->add_lang('memberlist');
 	}
 
 	public function info($user_id)
@@ -92,19 +94,18 @@ class user
 		}
 		$user_rank_data = phpbb_get_user_rank($this->data, $this->data['user_posts']);
 
-		$template = $this->user->style['style_name'];
-
 		// Get the avatar
 		// Wen need to use the full URL here because we don't know the path where userinfo is called
 		define('PHPBB_USE_BOARD_URL_PATH', true);
 		$avatar = phpbb_get_user_avatar($this->data);
-		$avatar = empty($avatar) ? '<img src="' . generate_board_url() . '/styles/' . $template . '/theme/images/no_avatar.gif" width="100" height="100" alt="' . $this->user->lang('USER_AVATAR') . '">' : $avatar;
+		$avatar = empty($avatar) ? '<img src="' . generate_board_url() . '/styles/' . $this->user->style['style_name'] . '/theme/images/no_avatar.gif" width="100" height="100" alt="' . $this->user->lang('USER_AVATAR') . '">' : $avatar;
 
 		$memberdays = max(1, round((time() - $this->data['user_regdate']) / 86400));
 		$posts_per_day = $this->data['user_posts'] / $memberdays;
 		$percentage = ($this->config['num_posts']) ? min(100, ($this->data['user_posts'] / $this->config['num_posts']) * 100) : 0;
 
 		$result = array(
+			'userinfo_header'	=> sprintf($this->user->lang['VIEWING_PROFILE'], $this->data['username']),
 			'username'		=> get_username_string('no_profile', $user_id, $this->data['username'], $this->data['user_colour']),
 			'regdate'		=> $this->user->format_date($this->data['user_regdate']),
 			'posts'			=> $this->data['user_posts'],
