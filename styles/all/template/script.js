@@ -30,11 +30,10 @@
 		function() {
 			var id = getURLParameter(($(this).attr('href')), 'u');
 			var url = userinfo_url.replace('USERID', id);
-
+			show_popup = true;
 			if(typeof data[id] === 'undefined') {
 				$.get(url, function( responseText ) {
 					data[id] = responseText;
-					show_popup = true;
 					$.each(data[id], function(index, value){
 						$('#ajax_'+index).html(value);
 					});
