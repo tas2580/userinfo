@@ -19,34 +19,38 @@
 
 		$('#popup').css({'top':(docY+35),'left':pos});
 	});
-	var timeout;
+
 	var data = new Array();
-	$("a.username-coloured, a.username").hover(
+	var show_popup = false;
+	$('a.username-coloured, a.username').mouseover(
 		function() {
 			var id = getURLParameter(($(this).attr('href')), 'u');
 			var url = userinfo_url.replace('USERID', id);
 
-			timeout = setTimeout(function(){
-				if(typeof data[id] === 'undefined') {
-					$.get(url, function( responseText ) {
-						data[id] = responseText;
-						$.each(data[id], function(index, value){
-							$('#ajax_'+index).html(value);
-						});
-						$( "#popup" ).show();
-					});
-				} else {
+			if(typeof data[id] === 'undefined') {
+				$.get(url, function( responseText ) {
+					data[id] = responseText;
+					show_popup = true;
 					$.each(data[id], function(index, value){
 						$('#ajax_'+index).html(value);
 					});
-					$( "#popup" ).show();
-				}
-			}, 200);
-		},
+					if (show_popup) {
+						$( '#popup').show();
+					}
+				});
+			} else {
+				$.each(data[id], function(index, value){
+					$('#ajax_'+index).html(value);
+				});
+				$('#popup').show();
+			}
+		}
+	);
+	$('a.username-coloured, a.username').mouseout(
 		function(){
-			clearTimeout(timeout);
-			$( "#popup" ).hide();
-			$( "#popup" ).find('span').each(function(){
+			show_popup = false;
+			$('#popup').hide();
+			$('#popup').find('span').each(function(){
 				$(this).html('');
 			});
 		}
