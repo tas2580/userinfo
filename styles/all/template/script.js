@@ -3,7 +3,7 @@
 
 	/* Set div to mouse */
 	$(document).mousemove( function(e) {
-		var docX, docY, pos;
+		var docX, docY, posX, posY;
 		if(e) {
 			if(typeof(e.pageX) === 'number') { docX = e.pageX; docY = e.pageY;}
 			else {docX = e.clientX; docY = e.clientY;}
@@ -12,12 +12,16 @@
 			docX += $(window).scrollLeft();
 		}
 		if (docX > $(window).width() - 400) {
-			pos = (docX - 350);
+			posX = (docX - 350);
 		} else {
-			pos = (docX - 15);
+			posX = (docX - 15);
 		}
-
-		$('#popup').css({'top':(docY+35),'left':pos});
+		if (docY > $(window).height() - 155) {
+			posY = (docY - 145);
+		} else {
+			posY = (docY + 35);
+		}
+		$('#popup').css({'top':posY,'left':posX});
 	});
 
 	var data = new Array();
