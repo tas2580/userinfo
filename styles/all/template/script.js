@@ -45,7 +45,9 @@
 				$.each(data[id], function(index, value){
 					$('#ajax_'+index).html(value);
 				});
-				$('#popup').show();
+				if (show_popup) {
+					$( '#popup').show();
+				}
 			}
 		}
 	);
