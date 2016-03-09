@@ -54,7 +54,7 @@ class user
 		$this->user = $user;
 		$this->phpbb_root_path = $phpbb_root_path;
 		$this->php_ext = $php_ext;
-	
+
 		$this->user->add_lang('memberlist');
 	}
 
