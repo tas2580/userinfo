@@ -4,22 +4,20 @@
 	/* Set div to mouse */
 	$(document).mousemove( function(e) {
 		var docX, docY, posX, posY;
-		if(e) {
-			if(typeof(e.pageX) === 'number') { docX = e.pageX; docY = e.pageY;}
-			else {docX = e.clientX; docY = e.clientY;}
-		} else {
-			docY += $(window).scrollTop();
-			docX += $(window).scrollLeft();
-		}
+		var popup_height = $('#popup').height();
+
+		docX = e.clientX + $(window).scrollLeft();
+		docY = e.clientY + $(window).scrollTop();
+
 		if (docX > $(window).width() - 400) {
 			posX = (docX - 350);
 		} else {
-			posX = (docX - 15);
+			posX = docX;
 		}
-		if (docY > $(window).height() - 155) {
-			posY = (docY - 145);
+		if (docY > ($(window).height() + $(window).scrollTop()) - popup_height - 40) {
+			posY = (docY - (popup_height + 20));
 		} else {
-			posY = (docY + 35);
+			posY = (docY + 30);
 		}
 		$('#popup').css({'top':posY,'left':posX});
 	});
