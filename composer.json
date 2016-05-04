@@ -22,7 +22,7 @@
 		"phpbb/epv": "dev-master"
 	},
 	"extra": {
-		"display-name": "tas2580 AJAX Userinfo",
+		"display-name": "AJAX Userinfo",
 		"soft-require": {
 			"phpbb/phpbb": ">=3.1.4-RC1,<3.2.0@dev"
 		},
