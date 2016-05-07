@@ -28,9 +28,9 @@ class listener implements EventSubscriberInterface
 	/**
 	 * Constructor
 	 *
-	 * @param \phpbb\template\template		$template			Template object
+	 * @param \phpbb\template\template		$template		Template object
 	 * @param \phpbb\auth\auth				$auth			Auth Object
-	 * @param \phpbb\controller\helper			$helper			Controller helper object
+	 * @param \phpbb\controller\helper		$helper			Controller helper object
 	 * @access public
 	 */
 	public function __construct(\phpbb\auth\auth $auth, \phpbb\controller\helper $helper, \phpbb\template\template $template)
@@ -65,7 +65,7 @@ class listener implements EventSubscriberInterface
 	{
 		$this->template->assign_vars(array(
 			'AJAX_USERINFO_PATH'	=> $this->helper->route('tas2580_userinfo', array('user_id' => 'USERID')),
-			'A_VIEWPROFILE'		=> $this->auth->acl_get('u_viewprofile'),
+			'A_VIEWPROFILE'			=> $this->auth->acl_get('u_viewprofile'),
 		));
 	}
 }

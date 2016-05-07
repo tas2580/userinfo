@@ -106,14 +106,14 @@ class user
 
 		$result = array(
 			'userinfo_header'	=> sprintf($this->user->lang['VIEWING_PROFILE'], $this->data['username']),
-			'username'		=> get_username_string('no_profile', $user_id, $this->data['username'], $this->data['user_colour']),
-			'regdate'		=> $this->user->format_date($this->data['user_regdate']),
-			'posts'			=> $this->data['user_posts'],
-			'lastvisit'		=> $this->user->format_date($this->data['user_lastvisit']),
-			'avatar'		=> $avatar,
-			'rank'			=> empty($user_rank_data['title']) ? $this->user->lang('NA') : $user_rank_data['title'],
-			'postsperday'	=> $this->user->lang('POST_DAY', $posts_per_day),
-			'percentage'	=> $this->user->lang('POST_PCT', $percentage),
+			'username'			=> get_username_string('no_profile', $user_id, $this->data['username'], $this->data['user_colour']),
+			'regdate'			=> $this->user->format_date($this->data['user_regdate']),
+			'posts'				=> $this->data['user_posts'],
+			'lastvisit'			=> $this->user->format_date($this->data['user_lastvisit']),
+			'avatar'			=> $avatar,
+			'rank'				=> empty($user_rank_data['title']) ? $this->user->lang('NA') : $user_rank_data['title'],
+			'postsperday'		=> $this->user->lang('POST_DAY', $posts_per_day),
+			'percentage'		=> $this->user->lang('POST_PCT', $percentage),
 		);
 
 		/**
