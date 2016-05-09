@@ -28,6 +28,9 @@ class user
 	/** @var \phpbb\user */
 	protected $user;
 
+	/** @var \phpbb\extension\manager */
+	protected $phpbb_extension_manager;
+
 	/** @var string phpbb_root_path */
 	protected $phpbb_root_path;
 
@@ -45,13 +48,14 @@ class user
 	 * @param string								$phpbb_root_path
 	 * @param string								$php_ext
 	 */
-	public function __construct(\phpbb\auth\auth $auth, \phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\event\dispatcher_interface $phpbb_dispatcher, \phpbb\user $user, $phpbb_root_path, $php_ext)
+	public function __construct(\phpbb\auth\auth $auth, \phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\event\dispatcher_interface $phpbb_dispatcher, \phpbb\user $user, \phpbb\extension\manager $phpbb_extension_manager, $phpbb_root_path, $php_ext)
 	{
 		$this->auth = $auth;
 		$this->config = $config;
 		$this->db = $db;
 		$this->phpbb_dispatcher = $phpbb_dispatcher;
 		$this->user = $user;
+		$this->phpbb_extension_manager = $phpbb_extension_manager;
 		$this->phpbb_root_path = $phpbb_root_path;
 		$this->php_ext = $php_ext;
 
@@ -98,7 +102,11 @@ class user
 		// Wen need to use the full URL here because we don't know the path where userinfo is called
 		define('PHPBB_USE_BOARD_URL_PATH', true);
 		$avatar = phpbb_get_user_avatar($this->data);
-		$avatar = empty($avatar) ? '<img src="' . generate_board_url() . '/styles/' . $this->user->style['style_name'] . '/theme/images/no_avatar.gif" width="100" height="100" alt="' . $this->user->lang('USER_AVATAR') . '">' : $avatar;
+		if (empty($avatar))
+		{
+			$avatar_url = generate_board_url() . '/' . $this->phpbb_extension_manager->get_extension_path('tas2580/userinfo', false) . 'images/no_avatar.gif';
+			$avatar = '<img src="' . $avatar_url . '" width="100" height="100" alt="' . $this->user->lang('USER_AVATAR') . '">';
+		}
 
 		$memberdays = max(1, round((time() - $this->data['user_regdate']) / 86400));
 		$posts_per_day = $this->data['user_posts'] / $memberdays;
@@ -109,7 +117,7 @@ class user
 			'username'			=> get_username_string('no_profile', $user_id, $this->data['username'], $this->data['user_colour']),
 			'regdate'			=> $this->user->format_date($this->data['user_regdate']),
 			'posts'				=> $this->data['user_posts'],
-			'lastvisit'			=> $this->user->format_date($this->data['user_lastvisit']),
+			'lastvisit'			=> ($this->data['user_lastvisit'] <> 0) ? $this->user->format_date($this->data['user_lastvisit']) : $this->user->lang('NEVER'),
 			'avatar'			=> $avatar,
 			'rank'				=> empty($user_rank_data['title']) ? $this->user->lang('NA') : $user_rank_data['title'],
 			'postsperday'		=> $this->user->lang('POST_DAY', $posts_per_day),
