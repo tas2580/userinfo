@@ -127,13 +127,13 @@ class user
 		/**
 		* Modify return data in tas2580 AJAX userinfo extension
 		*
-		* @event tas2580.userinfo_modify_result
+		* @event tas2580.userinfo.modify_result
 		* @var    array	result	The result array
 		* @var    int	user_id	The ID of the user
 		* @since 0.2.3
 		*/
 		$vars = array('result', 'user_id');
-		extract($this->phpbb_dispatcher->trigger_event('tas2580.userinfo_modify_result', compact($vars)));
+		extract($this->phpbb_dispatcher->trigger_event('tas2580.userinfo.modify_result', compact($vars)));
 
 		return new JsonResponse($result);
 	}
