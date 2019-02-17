@@ -70,7 +70,7 @@ class user
 		}
 
 		$sql_ary = array(
-			'SELECT'	=> 'u.username, u.user_colour, u.user_regdate, u.user_posts, u.user_lastvisit, u.user_rank, u.user_avatar, u.user_avatar_type, u.user_avatar_width, u.user_avatar_height',
+			'SELECT'	=> 'u.username, u.user_colour, u.user_regdate, u.user_posts, u.user_lastvisit, u.user_rank, u.user_avatar, u.user_avatar_type, u.user_avatar_width, u.user_avatar_height, u.user_allow_viewonline',
 			'FROM'		=> array(
 				USERS_TABLE	=> 'u',
 			),
@@ -92,6 +92,27 @@ class user
 		$this->data = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
 
+		if ($this->config['load_onlinetrack'])
+		{
+			$sql = 'SELECT MAX(session_time) AS session_time, MIN(session_viewonline) AS session_viewonline
+				FROM ' . SESSIONS_TABLE . '
+				WHERE session_user_id = ' . (int) $user_id;
+			$result = $this->db->sql_query($sql);
+			$row = $this->db->sql_fetchrow($result);
+			$this->db->sql_freeresult($result);
+
+			$this->data['session_time'] = (isset($row['session_time'])) ? $row['session_time'] : 0;
+			$this->data['session_viewonline'] = (isset($row['session_viewonline'])) ? $row['session_viewonline'] :	0;
+			unset($row);
+		}
+		if ($this->data['user_allow_viewonline'] || $this->auth->acl_get('u_viewonline'))
+		{
+			$last_active = (!empty($this->data['session_time'])) ? $this->data['session_time'] : $this->data['user_lastvisit'];
+		}
+		else
+		{
+			$last_active = '';
+		}
 		if (!function_exists('phpbb_get_user_rank'))
 		{
 			include($this->phpbb_root_path . 'includes/functions_display.' . $this->php_ext);
@@ -117,7 +138,7 @@ class user
 			'username'			=> get_username_string('no_profile', $user_id, $this->data['username'], $this->data['user_colour']),
 			'regdate'			=> $this->user->format_date($this->data['user_regdate']),
 			'posts'				=> $this->data['user_posts'],
-			'lastvisit'			=> ($this->data['user_lastvisit'] <> 0) ? $this->user->format_date($this->data['user_lastvisit']) : $this->user->lang('NEVER'),
+			'lastvisit'			=> (empty($last_active)) ? ' - ' : $this->user->format_date($last_active),
 			'avatar'			=> $avatar,
 			'rank'				=> empty($user_rank_data['title']) ? $this->user->lang('NA') : $user_rank_data['title'],
 			'postsperday'		=> $this->user->lang('POST_DAY', $posts_per_day),
